@@ -1,0 +1,81 @@
+
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+    <meta charset="UTF-8">
+    <title>Hlavolamy - Prezentácia</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body { font-family: sans-serif; margin: 0; padding: 0; background: #f0f0f0; }
+        .slide { display: none; flex-direction: column; justify-content: center; align-items: center; height: 100vh; padding: 20px; text-align: center; }
+        .slide.active { display: flex; }
+        img { max-width: 80%; height: auto; margin-bottom: 20px; }
+        input { padding: 10px; font-size: 16px; margin: 10px 0; width: 80%; }
+        button { padding: 10px 20px; font-size: 16px; }
+        #final-message { font-size: 20px; color: green; }
+    </style>
+</head>
+<body>
+
+<div id="slides">
+    <div class="slide active" data-answer="zmes,směs">
+        <img src="https://via.placeholder.com/300x200?text=Krabice" alt="Krabice">
+        <p>Máš pred sebou tri krabice: jedna obsahuje iba jablká, druhá iba hrušky a tretia zmes oboch. Všetky sú nesprávne označené.<br><strong>Ktorú otvoríš ako prvú, aby si zistil, čo je v každej z nich?</strong></p>
+        <input type="text"><button onclick="checkAnswer(this)">Ďalej</button>
+    </div>
+    <div class="slide" data-answer="zápalka,sirka,sirku,zapalka">
+        <img src="https://via.placeholder.com/300x200?text=Zápalka" alt="Zápalka">
+        <p>Si v tmavej miestnosti. Máš len sviečku, petrolejovú lampu a zápalky.<br><strong>Čo zapáliš ako prvé?</strong></p>
+        <input type="text"><button onclick="checkAnswer(this)">Ďalej</button>
+    </div>
+    <div class="slide" data-answer="diera,díra">
+        <img src="https://via.placeholder.com/300x200?text=Diera" alt="Diera">
+        <p>Čím viac z nej odoberáš, tým väčšia je.<br><strong>Čo je to?</strong></p>
+        <input type="text"><button onclick="checkAnswer(this)">Ďalej</button>
+    </div>
+    <div class="slide" data-answer="žiadne,ziadne,žádní,žádné,nula,0">
+        <img src="https://via.placeholder.com/300x200?text=Vtáky" alt="Vtáky">
+        <p>Na strome je 10 vtákov. Jedného zastrelíš.<br><strong>Koľko ostane?</strong></p>
+        <input type="text"><button onclick="checkAnswer(this)">Ďalej</button>
+    </div>
+    <div class="slide" data-answer="dážď,dazd,déšť,dest">
+        <img src="https://via.placeholder.com/300x200?text=Dážď" alt="Dážď">
+        <p>Padá, ale nikdy sa nezraní.<br><strong>Čo je to?</strong></p>
+        <input type="text"><button onclick="checkAnswer(this)">Ďalej</button>
+    </div>
+    <div class="slide" data-answer="zaklopeš,zaklopes,zaklepeš,zaklepes,klepes,klepeš">
+        <img src="https://via.placeholder.com/300x200?text=Sud" alt="Sud">
+        <p>Sud je plný vody. Ako zistíš, že je naplnený do polovice bez nástrojov?<br><strong>Odpovedz jedným slovom.</strong></p>
+        <input type="text"><button onclick="checkAnswer(this)">Dokončiť</button>
+    </div>
+    <div class="slide">
+        <p id="final-message">Výborne! Zvládol si všetky úlohy. Tu je tvoja odmena:<br><br>
+        <strong>[Sem môžeš vložiť heslo, odkaz alebo QR kód]</strong></p>
+    </div>
+</div>
+
+<script>
+    function normalize(str) {
+        return str.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
+    }
+
+    function checkAnswer(button) {
+        const slide = button.parentElement;
+        const input = slide.querySelector("input").value.trim();
+        const answers = slide.getAttribute("data-answer").split(",");
+        const isCorrect = answers.some(ans => normalize(ans) === normalize(input));
+        if (isCorrect) {
+            const slides = document.querySelectorAll(".slide");
+            const index = Array.from(slides).indexOf(slide);
+            if (index + 1 < slides.length) {
+                slides[index].classList.remove("active");
+                slides[index + 1].classList.add("active");
+            }
+        } else {
+            alert("Nesprávna odpoveď. Skús znova.");
+        }
+    }
+</script>
+
+</body>
+</html>
